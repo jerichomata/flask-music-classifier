@@ -9,4 +9,5 @@ HEROKU
 1. pip install gunicorn
 2. pip install freeze > requirements.txt #create req.txt
 3. touch Procfile
+4. test
     

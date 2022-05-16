@@ -9,8 +9,8 @@ Check if endpoints are up in http://localhost:5000/
 
 ## Lauch app
 1. Run `cd frontend` to enter frontend code folder
-2. Run 'npm install'
-3. Run 'npm start'
+2. Run `npm install`
+3. Run `npm start`
 
 # Deploy with HEROKU
 1. pip install gunicorn

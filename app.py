@@ -1,8 +1,11 @@
+from extractFeatures import *
 from flask import Flask, redirect, url_for, render_template, request, send_file
 from datetime import timedelta
 from werkzeug.utils import secure_filename
 from flask_cors import CORS #comment this on deployment
 import os
+import io
+import pydub
 
 # Configuration stuff
 app = Flask(__name__)
@@ -25,6 +28,9 @@ def model():
 
     return 0
 
+
+
+
 # Home page of website
 @app.route("/", methods=['GET', "POST"])
 def home():
@@ -41,7 +47,25 @@ def home():
             f = request.files['file']
             # Retreives the file and puts it at specified location
             if f.filename:
-                f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+                
+                #Code to potential convert mp3 to .wav
+                #wav = io.BytesIO()
+                #f.seek() = lambda *args: None
+                #pydub.AudioSegment.from_file(f.seek(0)).export(wav, "wav")
+                #wav.seek(0)
+                #ExtractFeatures(wav)
+
+                #Upload file from reach
+                #Re-save this file
+                ExtractFeatures(f)
+
+                #To save to local file system
+                #f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+                
+                #filename = f.filename
+                #ExtractFeatures("/static/files/" + filename)
+                #'static/files/extraction_files_1.mp3'
+
             else:
                 return render_template("home.html")
         

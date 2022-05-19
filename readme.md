@@ -3,7 +3,7 @@
 ### Do the following steps if you don't have flask installed
 1. Create py venv
 2. `pip install flask`
-3. `pip install flask_wtf`
+
 ### Run `flask run` if already have flask installed
 Check if endpoints are up in http://localhost:5000/
 

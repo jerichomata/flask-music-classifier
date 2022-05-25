@@ -18,6 +18,7 @@ const Input = styled("input")({
 function App() {
   const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(false);
+  const [genre, setGenre] = useState("");
 
   return (
     <>
@@ -73,6 +74,7 @@ function App() {
                     setTimeout(() => {
                       setLoading(false);
                     }, 5000);
+                    setGenre("RESPONSE GENRE");
                     console.log("SUCCESS");
                   })
                   .catch((error) => {
@@ -83,6 +85,12 @@ function App() {
           >
             {loading ? "Classifying" : "Classify"}
           </LoadingButton>
+
+          {genre && (
+            <Typography variant="h6" color="white">
+              Genre {genre}
+            </Typography>
+          )}
         </Stack>
         <img src={placeholder} alt="music" />
       </Stack>

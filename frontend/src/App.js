@@ -1,6 +1,6 @@
 import "./App.css";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -19,6 +19,8 @@ function App() {
   const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("");
+  const [initData, getData] = useState([{}]);
+
 
   return (
     <>
@@ -69,12 +71,20 @@ function App() {
                 formData.append("file", selectedFile);
                 setLoading(true);
                 axios
-                  .post("http://localhost:5000", formData)
+                  .post("/home", formData)
                   .then(() => {
+                    fetch("/home").then(
+                      res => res.json()
+                    ).then(
+                      data => {
+                        getData(data)
+                        setGenre(initData.text)
+                      }
+                    )
                     setTimeout(() => {
                       setLoading(false);
-                    }, 5000);
-                    setGenre("RESPONSE GENRE");
+                    }, []);
+                    
                     console.log("SUCCESS");
                   })
                   .catch((error) => {
@@ -88,7 +98,7 @@ function App() {
 
           {genre && (
             <Typography variant="h6" color="white">
-              Genre {genre}
+              Genre {initData.text}
             </Typography>
           )}
         </Stack>

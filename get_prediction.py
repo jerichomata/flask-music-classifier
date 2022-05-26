@@ -1,15 +1,15 @@
+import pandas as pd
+import numpy as np
 
-from calendar import c
-import IPython.display as ipd
 import librosa
 import librosa.display
-import numpy as np
-import pandas as pd
 from scipy import stats
+import sys
+import os
+import pickle
 
 
-
-def getColumns():
+def columns():
     feature_sizes = dict(chroma_stft=12, chroma_cqt=12, chroma_cens=12,
                          tonnetz=6, mfcc=20, rmse=1, zcr=1,
                          spectral_centroid=1, spectral_bandwidth=1,
@@ -28,7 +28,13 @@ def getColumns():
     return columns.sort_values()
 
 
-def feature_stats(name, values, features):
+def feature_extract(filename):
+    x, sr = librosa.load(filename, sr=None, mono=True)
+    
+    columns()
+    features = pd.Series(index=columns(), dtype=np.float32)
+
+    def feature_stats(name, values):
         features[name, 'mean'] = np.mean(values, axis=1)
         features[name, 'std'] = np.std(values, axis=1)
         features[name, 'skew'] = stats.skew(values, axis=1)
@@ -37,29 +43,20 @@ def feature_stats(name, values, features):
         features[name, 'min'] = np.min(values, axis=1)
         features[name, 'max'] = np.max(values, axis=1)
 
-
-
-def ExtractFeatures(f):
-
-    x, sr = librosa.load(f, sr=None, mono=True)
-    print('Duration: {:.2f}s, {} samples'.format(x.shape[-1] / sr, x.size))
-
-    features = pd.Series(index= getColumns(), dtype=np.float32, name=1)
-
     f = librosa.feature.zero_crossing_rate(x, frame_length=2048, hop_length=512)
-    feature_stats('zcr', f, features)
+    feature_stats('zcr', f)
 
     cqt = np.abs(librosa.cqt(x, sr=sr, hop_length=512, bins_per_octave=12,
-                                 n_bins=7*12, tuning=None))
+                                    n_bins=7*12, tuning=None))
     assert cqt.shape[0] == 7 * 12
     assert np.ceil(len(x)/512) <= cqt.shape[1] <= np.ceil(len(x)/512)+1
 
     f = librosa.feature.chroma_cqt(C=cqt, n_chroma=12, n_octaves=7)
-    feature_stats('chroma_cqt', f, features)
+    feature_stats('chroma_cqt', f)
     f = librosa.feature.chroma_cens(C=cqt, n_chroma=12, n_octaves=7)
-    feature_stats('chroma_cens', f, features)
+    feature_stats('chroma_cens', f)
     f = librosa.feature.tonnetz(chroma=f)
-    feature_stats('tonnetz', f, features)
+    feature_stats('tonnetz', f)
 
     del cqt
     stft = np.abs(librosa.stft(x, n_fft=2048, hop_length=512))
@@ -68,31 +65,47 @@ def ExtractFeatures(f):
     del x
 
     f = librosa.feature.chroma_stft(S=stft**2, n_chroma=12)
-    feature_stats('chroma_stft', f, features)
+    feature_stats('chroma_stft', f)
 
     f = librosa.feature.rms(S=stft)
-    feature_stats('rmse', f, features)
+    feature_stats('rmse', f)
 
     f = librosa.feature.spectral_centroid(S=stft)
-    feature_stats('spectral_centroid', f, features)
+    feature_stats('spectral_centroid', f)
     f = librosa.feature.spectral_bandwidth(S=stft)
-    feature_stats('spectral_bandwidth', f, features)
+    feature_stats('spectral_bandwidth', f)
     f = librosa.feature.spectral_contrast(S=stft, n_bands=6)
-    feature_stats('spectral_contrast', f, features)
+    feature_stats('spectral_contrast', f)
     f = librosa.feature.spectral_rolloff(S=stft)
-    feature_stats('spectral_rolloff', f, features)
+    feature_stats('spectral_rolloff', f)
 
     mel = librosa.feature.melspectrogram(sr=sr, S=stft**2)
     del stft
     f = librosa.feature.mfcc(S=librosa.power_to_db(mel), n_mfcc=20)
-    feature_stats('mfcc', f, features)
+    feature_stats('mfcc', f)
 
     features = features.to_frame().T
-    print(features.shape)
 
-    columns = ['mfcc', 'chroma_cens', 'tonnetz', 'spectral_contrast']
-    columns.append(['spectral_centroid', 'spectral_bandwidth', 'spectral_rolloff'])
-    columns.append(['rmse', 'zcr'])
-    for column in columns:
-        #ipd.display(features[column].head().style.format('{:.2f}'))
-        print("features: ", features[column].head())
+    return features
+
+def get_prediction(filename):
+    
+    #pthname_lst = [x for x in sys.argv if x.endswith("model.pkl")]
+    #pthname = pthname_lst[0]
+
+    print("current directory", os.getcwd())
+
+    loaded_model = pickle.load(open('flask-music-classifier/mlp_model.pkl', 'rb'))
+    loaded_sc = pickle.load(open('flask-music-classifier/mlp_standard_scaler.pkl', 'rb'))
+    
+    
+
+    features = feature_extract(filename)
+    features = loaded_sc.transform(features)
+
+    prediction = loaded_model.predict(features)
+    return str(prediction)
+
+    
+
+#get_prediction("../feature extraction/files/1.mp3")

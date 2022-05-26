@@ -50,13 +50,6 @@ def home():
 
         print("IN LOOP")
         return {'text': Concurrency.output}
-    
-# For Downloading a file
-@app.route('/download')
-def download_file():
-    p = "prediction.csv"
-    return send_file(p, as_attachment=True)
-
 
 if __name__ == '__main__':
     # Allows for live debugging and updating

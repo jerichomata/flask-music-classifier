@@ -41,12 +41,12 @@ def home():
         #Code to try and work with MP3
         #Save the file to local storage and pass the path to the librosa.load()
         #For some reason not looking in right directory right now -----------------
-        f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
-        print('flask-music-classifier/static/files/' + f.filename)
-        prediction = get_prediction('flask-music-classifier/static/files/' + f.filename)
+        #f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+        #print('flask-music-classifier/static/files/' + f.filename)
+        #prediction = get_prediction('flask-music-classifier/static/files/' + f.filename)
         #-----------------------------------
 
-        #prediction = get_prediction(f)
+        prediction = get_prediction(f)
         print("prediction", prediction)
         print("filename: ", f.filename)
 

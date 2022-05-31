@@ -25,15 +25,15 @@ app.secret_key = "bobross"
 # Only delete webpage data after 5 days
 app.permanent_session_lifetime = timedelta(days=5)
 
-
+#Class to store prediction
 class Concurrency:
-    output = "Upload Audio File"
+    prediction = "Upload Audio File"
 
 # Home page of website
 @app.route("/home", methods=['GET', "POST"])
 def home():
     
-        # Function that checks if we uploaded files        
+    # Function that checks if we uploaded files        
     if request.method == 'POST':
         #request.files['file']
         f = request.files['file']
@@ -46,18 +46,17 @@ def home():
         #prediction = get_prediction('flask-music-classifier/static/files/' + f.filename)
         #-----------------------------------
 
+        #Call function to get prediction
         prediction = get_prediction(f)
         print("prediction", prediction)
         print("filename: ", f.filename)
 
-        #Only get index 2 to (2 from the end)
-        Concurrency.output = prediction[2:-2]
+        Concurrency.prediction = prediction[2:-2]
         return {'text': prediction}
     
     else:
 
-        print("IN LOOP")
-        return {'text': Concurrency.output}
+        return {'text': Concurrency.prediction}
 
 if __name__ == '__main__':
     # Allows for live debugging and updating

@@ -6,7 +6,9 @@ from flask_cors import CORS #comment this on deployment
 import os
 import io
 import pydub
+from pydub import AudioSegment
 from flask import jsonify
+import subprocess
 #from app import output
 
 # Configuration stuff
@@ -38,12 +40,11 @@ def home():
         #request.files['file']
         f = request.files['file']
 
-        #Call function to get prediction
         prediction = get_prediction(f)
         print("prediction", prediction)
         print("filename: ", f.filename)
 
-        #
+        
         Concurrency.prediction = prediction[2:-2]
         return {'text': prediction}
     

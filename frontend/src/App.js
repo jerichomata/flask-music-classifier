@@ -11,6 +11,41 @@ import placeholder from "./assets/adrian-regeci-SAS0lq2QGLs-unsplash.jpg";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 
+import * as ReactDOM from "react-dom";
+import {
+  Chart,
+  ChartLegend,
+  ChartSeries,
+  ChartSeriesItem,
+  ChartSeriesLabels,
+} from "@progress/kendo-react-charts";
+import "hammerjs";
+import data from "./prob-data.json"; // probability data points
+
+const labelContent = (e) => e.category;
+
+const ChartContainer = () => (
+  <Chart>
+    <ChartSeries>
+      <ChartSeriesItem
+        type="donut"
+        data={data}
+        categoryField="kind"
+        field="share"
+      >
+        <ChartSeriesLabels
+          color="#fff"
+          background="none"
+          content={labelContent}
+        />
+      </ChartSeriesItem>
+    </ChartSeries>
+    <ChartLegend visible={false} />
+  </Chart>
+);
+
+// ReactDOM.render(<ChartContainer />, document.querySelector('my-app'));
+
 const Input = styled("input")({
   display: "none",
 });
@@ -19,10 +54,11 @@ function App() {
   const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("");
-
+  
   return (
     <>
       <Stack direction="row" backgroundColor="#222831" height="100vh">
+        
         <Stack
           direction="column"
           alignItems="center"
@@ -85,7 +121,7 @@ function App() {
           >
             {loading ? "Classifying" : "Classify"}
           </LoadingButton>
-
+          <ChartContainer />
           {genre && (
             <Typography variant="h6" color="white">
               Genre {genre}

@@ -1,0 +1,15 @@
+[
+    {
+      "kind": "Rock",
+      "share": 0.7
+    },
+    {
+      "kind": "Experimental",
+      "share": 0.5
+    },
+    {
+      "kind": "Classical",
+      "share": 0.25
+    }
+  ]
+  

@@ -17,4 +17,9 @@ App is ready to use. It can take a while or a short
 time to classify songs. If it takes longer
 that a minute the first time you try to run the app,
 restart the python and react programs and try again.
-    
+
+
+It should work after restarting once. No prediction
+will be returned the first time you try to classify,
+but every subsequent try to classify a song will work,
+just not the first.

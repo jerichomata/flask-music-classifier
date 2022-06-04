@@ -14,7 +14,7 @@ Check if endpoints are up in http://localhost:5000/
 3. Run `npm start`
 4. See the web interface at http://localhost:3000/
 
-App is ready to use. You can upload audio file in `.wav` format and click `Classify.`
+App is ready to use. You can upload audio file in `.wav` format and click `Classify` to see the results.
 
 It can take a while or a short
 time to classify songs. If it takes longer

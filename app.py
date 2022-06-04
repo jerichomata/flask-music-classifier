@@ -3,9 +3,6 @@ from flask import Flask, request
 from datetime import timedelta
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-import os
-import io
-
 
 # Configuration stuff
 app = Flask(__name__)

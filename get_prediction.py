@@ -95,8 +95,8 @@ def get_prediction(filename):
 
     print("current directory", os.getcwd())
 
-    loaded_model = pickle.load(open('flask-music-classifier/mlp_5_class_model.pkl', 'rb'))
-    loaded_sc = pickle.load(open('flask-music-classifier/mlp_5_class_sc.pkl', 'rb'))
+    loaded_model = pickle.load(open('mlp_5_class_model.pkl', 'rb'))
+    loaded_sc = pickle.load(open('mlp_5_class_sc.pkl', 'rb'))
     
     
 

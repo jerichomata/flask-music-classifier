@@ -1,6 +1,6 @@
 import "./App.css";
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -20,7 +20,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("");
   const [initData, getData] = useState([{}]);
-
 
   return (
     <>
@@ -72,20 +71,9 @@ function App() {
                 setLoading(true);
                 axios
                   .post("/home", formData)
-                  .then(() => {
-                    fetch("/home").then(
-                      res => res.json()
-                    ).then(
-                      data => {
-                        getData(data)
-                        setGenre(initData.text)
-                      }
-                    )
-                    setTimeout(() => {
-                      setLoading(false);
-                    }, []);
-                    
-                    console.log("SUCCESS");
+                  .then((res) => {
+                    setLoading(false);
+                    setGenre(res.data.text);
                   })
                   .catch((error) => {
                     console.log(error);
@@ -98,7 +86,7 @@ function App() {
 
           {genre && (
             <Typography variant="h6" color="white">
-              Genre {initData.text}
+              Genre {genre}
             </Typography>
           )}
         </Stack>

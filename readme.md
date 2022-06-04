@@ -12,8 +12,7 @@ Check if endpoints are up in http://localhost:5000/
 2. Run `npm install`
 3. Run `npm start`
 
-# Deploy with HEROKU
-1. pip install gunicorn
-2. pip install freeze > requirements.txt #create req.txt
-3. touch Procfile
-4. test
+App is ready to use. It can take a while or a short
+time to classify songs. If it takes longer
+that a minute the first time you try to run the app,
+restart the python program.

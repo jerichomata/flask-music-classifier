@@ -14,11 +14,12 @@ Check if endpoints are up in http://localhost:5000/
 3. Run `npm start`
 4. See the web interface at http://localhost:3000/
 
-App is ready to use. It can take a while or a short
+App is ready to use. You can upload audio file in `.wav` format and click `Classify.`
+
+It can take a while or a short
 time to classify songs. If it takes longer
 that a minute the first time you try to run the app,
 restart the python and react programs and try again.
-
 
 It should work after restarting once. No prediction
 will be returned the first time you try to classify,

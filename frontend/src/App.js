@@ -19,6 +19,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("");
+  const [initData, getData] = useState([{}]);
 
   return (
     <>
@@ -69,13 +70,10 @@ function App() {
                 formData.append("file", selectedFile);
                 setLoading(true);
                 axios
-                  .post("http://localhost:5000", formData)
-                  .then(() => {
-                    setTimeout(() => {
-                      setLoading(false);
-                    }, 5000);
-                    setGenre("RESPONSE GENRE");
-                    console.log("SUCCESS");
+                  .post("/home", formData)
+                  .then((res) => {
+                    setLoading(false);
+                    setGenre(res.data.text);
                   })
                   .catch((error) => {
                     console.log(error);

@@ -19,7 +19,6 @@ function App() {
   const [selectedFile, setSelectedFile] = useState();
   const [loading, setLoading] = useState(false);
   const [genre, setGenre] = useState("");
-  const [initData, getData] = useState([{}]);
 
   return (
     <>

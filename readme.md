@@ -12,7 +12,7 @@ Check if endpoints are up in http://localhost:5000/
 1. Run `cd frontend` to enter frontend code folder
 2. Run `npm install`
 3. Run `npm start`
-4. See the web interface at http://localhost:5000/
+4. See the web interface at http://localhost:3000/
 
 App is ready to use. It can take a while or a short
 time to classify songs. If it takes longer

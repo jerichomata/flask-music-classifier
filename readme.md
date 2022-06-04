@@ -1,8 +1,9 @@
 # Lauch app with local flask backend
 ## Set up flask backend
 ### Do the following steps if you don't have flask installed
-1. Create py venv
-2. `pip install flask`
+1. cd into the "flask-music-classifier" directory on your computer
+2. Create py venv
+3. `pip install flask`
 
 ### Run `flask run` if already have flask installed
 Check if endpoints are up in http://localhost:5000/

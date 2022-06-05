@@ -16,7 +16,7 @@ Check if endpoints are up in http://localhost:5000/
 
 App is ready to use. You can upload audio file in `.wav` format and click `Classify` to see the results.
 
-# Note
+### Note
 It can take a while or a short
 time to classify songs. If it takes longer
 that a minute to classify, restart the python and

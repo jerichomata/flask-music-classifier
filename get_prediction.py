@@ -4,11 +4,11 @@ import numpy as np
 import librosa
 import librosa.display
 from scipy import stats
-
+import sys
+import os
 import pickle
 
 
-# define columns for each of the features
 def columns():
     feature_sizes = dict(chroma_stft=12, chroma_cqt=12, chroma_cens=12,
                          tonnetz=6, mfcc=20, rmse=1, zcr=1,
@@ -27,8 +27,7 @@ def columns():
 
     return columns.sort_values()
 
-# extract features using librosa
-# returns a dataframe with 1 row, 518 columns
+
 def feature_extract(filename):
     x, sr = librosa.load(filename, sr=None, mono=True)
     
@@ -89,23 +88,24 @@ def feature_extract(filename):
 
     return features
 
-
-# returns genre prediction of filename
 def get_prediction(filename):
-    # load model and scaler from pkl files
-    loaded_model = pickle.load(open('./pkl files/mlp_5_class_model.pkl', 'rb'))
-    loaded_sc = pickle.load(open('./pkl files/mlp_5_class_sc.pkl', 'rb'))
+    
+    #pthname_lst = [x for x in sys.argv if x.endswith("model.pkl")]
+    #pthname = pthname_lst[0]
 
-    # extract features and transform using loaded scaler
+    print("current directory", os.getcwd())
+
+    loaded_model = pickle.load(open('mlp_5_class_model.pkl', 'rb'))
+    loaded_sc = pickle.load(open('mlp_5_class_sc.pkl', 'rb'))
+    
+    
+
     features = feature_extract(filename)
     features = loaded_sc.transform(features)
 
-    # predict probability of all genres using loaded model
-    prediction = loaded_model.predict_proba(features)
+    prediction = loaded_model.predict(features)
+    return str(prediction)
 
-    # store results in a dictionary with genre as key and probability as value
-    results = {}
-    for i in range(len(prediction[0])):
-        results[loaded_model.classes_[i]] = float(prediction[0][i])
+    
 
-    return results
+#get_prediction("../feature extraction/files/1.mp3")
